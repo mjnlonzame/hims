@@ -4,3 +4,6 @@ insert into patient(id,name,age,gender,address) values(3,'Hari',74,'Male','925/8
 
 
 insert into doctor(id,name,age,gender,address) values(1,'Juan Dele Cruz',31,'Male','Manila, Philippines');
+
+
+insert into receptionist(id,name) values(1,'Sunil Patil');

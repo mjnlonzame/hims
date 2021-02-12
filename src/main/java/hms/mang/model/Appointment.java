@@ -18,7 +18,11 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    LocalDate appointmentDate;
     LocalDate visitDate;
+
+    private String diagnosis ;
+    private String prescription;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")

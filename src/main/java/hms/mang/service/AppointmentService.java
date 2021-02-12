@@ -1,9 +1,9 @@
 package hms.mang.service;
 
 import hms.mang.model.Appointment;
-import hms.mang.model.Checkup;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AppointmentService {
     Appointment save(Appointment appointment);
@@ -11,4 +11,6 @@ public interface AppointmentService {
     List<Appointment> getAllByPatientId(Long patientId);
 
     List<Appointment> getAllByDoctortId(Long doctorId);
+
+    Optional<Appointment> findById(Long id);
 }

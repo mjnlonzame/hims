@@ -1,7 +1,6 @@
 package hms.mang.controller;
 
 import hms.mang.model.Appointment;
-import hms.mang.model.Checkup;
 import hms.mang.model.Doctor;
 import hms.mang.model.Patient;
 import hms.mang.service.AppointmentService;
@@ -33,7 +32,7 @@ public class AppointmentController {
 
     @PostMapping(value = "/{patientId}/{doctorId}", consumes = "application/json")
     public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment, @PathVariable("patientId") Long patientId, @PathVariable("doctorId") Long doctorId) {
-        Optional<Patient>  optionalPatient = patientService.getById(patientId);
+        Optional<Patient> optionalPatient = patientService.getById(patientId);
 
         if (optionalPatient.isPresent()) {
             appointment.setPatient(optionalPatient.get());
@@ -63,6 +62,24 @@ public class AppointmentController {
     }
 
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Appointment> patchItem(@PathVariable("id") Long id, @RequestBody Appointment patchAppointment) {
+ 		Optional<Appointment> optionalAppointment = appointmentService.findById(id);
+		if(optionalAppointment.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+
+        Appointment appointment = optionalAppointment.get();
+		if(patchAppointment.getPrescription() != null) {
+            appointment.setPrescription(patchAppointment.getPrescription());
+		}
+
+        if(patchAppointment.getDiagnosis() != null) {
+            appointment.setDiagnosis(patchAppointment.getDiagnosis());
+        }
+
+        return new ResponseEntity<>(appointmentService.save(appointment), HttpStatus.OK);
+    }
 
 
 }

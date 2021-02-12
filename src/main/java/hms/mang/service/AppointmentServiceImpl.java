@@ -1,11 +1,11 @@
 package hms.mang.service;
 
 import hms.mang.model.Appointment;
-import hms.mang.model.Checkup;
 import hms.mang.repository.AppointmentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,5 +30,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Appointment> getAllByDoctortId(Long doctorId) {
         return StreamSupport.stream(appointmentRepository.findAllByDoctorId(doctorId).spliterator(), false).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Appointment> findById(Long id) {
+        return appointmentRepository.findById(id);
     }
 }
