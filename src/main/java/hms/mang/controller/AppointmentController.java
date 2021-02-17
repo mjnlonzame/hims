@@ -30,24 +30,36 @@ public class AppointmentController {
         this.patientService = patientService;
     }
 
-    @PostMapping(value = "/{patientId}/{doctorId}", consumes = "application/json")
-    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment, @PathVariable("patientId") Long patientId, @PathVariable("doctorId") Long doctorId) {
-        Optional<Patient> optionalPatient = patientService.getById(patientId);
+//    @PostMapping(value = "/{patientId}/{doctorId}", consumes = "application/json")
+    @PostMapping(value = "/", consumes = "application/json")
+    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment
 
-        if (optionalPatient.isPresent()) {
-            appointment.setPatient(optionalPatient.get());
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        Optional<Doctor> optDoctor = doctorService.getById(doctorId);
-        if (optDoctor.isPresent()) {
-            appointment.setDoctor(optDoctor.get());
-        }
-
-        appointment.setPatient(optionalPatient.get());
+//            , @PathVariable("patientId") Long patientId, @PathVariable("doctorId") Long doctorId
+    ) {
+//        Optional<Patient> optionalPatient = patientService.getById(patientId);
+//
+//        if (optionalPatient.isPresent()) {
+//            appointment.setPatient(optionalPatient.get());
+//        } else {
+//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//
+//        Optional<Doctor> optDoctor = doctorService.getById(doctorId);
+//        if (optDoctor.isPresent()) {
+//            appointment.setDoctor(optDoctor.get());
+//        }
+//
+//        appointment.setPatient(optionalPatient.get());
         return new ResponseEntity<>(appointmentService.save(appointment), HttpStatus.CREATED);
     }
+
+
+    @GetMapping("/")
+    public ResponseEntity<List<Appointment>> getAll() {
+        List<Appointment> appointments = appointmentService.getAll();
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
 
     @GetMapping("/patient/{patientId}")
     public ResponseEntity<List<Appointment>> getAllByPatientId(@PathVariable("patientId") Long patientId) {
@@ -63,7 +75,7 @@ public class AppointmentController {
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Appointment> patchItem(@PathVariable("id") Long id, @RequestBody Appointment patchAppointment) {
+    public ResponseEntity<Appointment> patchAppointment(@PathVariable("id") Long id, @RequestBody Appointment patchAppointment) {
  		Optional<Appointment> optionalAppointment = appointmentService.findById(id);
 		if(optionalAppointment.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

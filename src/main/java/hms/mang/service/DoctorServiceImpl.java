@@ -1,5 +1,6 @@
 package hms.mang.service;
 
+import hms.mang.model.Appointment;
 import hms.mang.model.Doctor;
 import hms.mang.repository.AppointmentRepository;
 import hms.mang.repository.DoctorRepository;
@@ -36,5 +37,10 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public Optional<Doctor> getById(Long id) {
         return doctorRepository.findById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        doctorRepository.deleteById(id);
     }
 }

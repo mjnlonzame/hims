@@ -38,4 +38,9 @@ public class PatientServiceImpl implements  PatientService {
     public List<Patient> getAll() {
         return StreamSupport.stream(patientRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteById(Long id) {
+        patientRepository.deleteById(id);
+    }
 }

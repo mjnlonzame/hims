@@ -20,16 +20,16 @@ public class Appointment {
 
     LocalDate appointmentDate;
     LocalDate visitDate;
-
+    private String complaint;
     private String diagnosis ;
     private String prescription;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 }

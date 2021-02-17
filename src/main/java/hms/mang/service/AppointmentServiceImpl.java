@@ -36,4 +36,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Optional<Appointment> findById(Long id) {
         return appointmentRepository.findById(id);
     }
+
+    @Override
+    public List<Appointment> getAll() {
+        return StreamSupport.stream(appointmentRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    }
 }

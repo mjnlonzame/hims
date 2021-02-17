@@ -1,14 +1,17 @@
 package hms.mang.controller;
 
+import hms.mang.model.Appointment;
 import hms.mang.model.Doctor;
 import hms.mang.model.Patient;
 import hms.mang.service.DoctorService;
 import hms.mang.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.Doc;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,5 +50,35 @@ public class DoctorController {
     public ResponseEntity<List<Doctor>> getAll() {
         List<Doctor> doctors = doctorService.getAll();
         return new ResponseEntity<>(doctors, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Doctor> patchDoctor(@PathVariable("id") Long id, @RequestBody Doctor patchDoctor) {
+        Optional<Doctor> optionalDoctor = doctorService.getById(id);
+        if(optionalDoctor.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        Doctor doctor = optionalDoctor.get();
+        if(patchDoctor.getSpecialization() != null) {
+            doctor.setSpecialization(patchDoctor.getSpecialization());
+        }
+
+        if(patchDoctor.getName() != null) {
+            doctor.setName(patchDoctor.getName());
+        }
+
+        return new ResponseEntity<>(doctorService.save(doctor), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public ResponseEntity<?> deleteDoctor(@PathVariable("id") Long id) {
+        try {
+            doctorService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

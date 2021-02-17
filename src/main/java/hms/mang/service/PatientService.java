@@ -13,4 +13,6 @@ public interface PatientService {
     Optional<Patient> getById(Long id);
 
     List<Patient> getAll();
+
+    void deleteById(Long id);
 }

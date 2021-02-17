@@ -1,9 +1,10 @@
 package hms.mang.controller;
 
-import hms.mang.model.Patient;
+    import hms.mang.model.Patient;
 import hms.mang.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+    import org.springframework.dao.EmptyResultDataAccessException;
+    import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,5 +46,44 @@ public class PatientController {
         List<Patient> patients = patientService.getAll();
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Patient> patchPatient(@PathVariable("id") Long id, @RequestBody Patient patchPatient) {
+        Optional<Patient> optionalPatient = patientService.getById(id);
+        if(optionalPatient.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        Patient patient = optionalPatient.get();
+        if(patchPatient.getAge() != 0) {
+            patient.setAge(patchPatient.getAge());
+        }
+
+        if(patchPatient.getName() != null) {
+            patient.setName(patchPatient.getName());
+        }
+
+        if(patchPatient.getAddress() != null) {
+            patient.setAddress(patchPatient.getAddress());
+        }
+
+        if(patchPatient.getGender() != null) {
+            patient.setGender(patchPatient.getGender());
+        }
+
+        return new ResponseEntity<>(patientService.save(patient), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public ResponseEntity<?> deletePatient(@PathVariable("id") Long id) {
+        try {
+            patientService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 }

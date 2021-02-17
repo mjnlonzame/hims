@@ -23,5 +23,7 @@ public class Doctor {
     private int age;
     private String gender;
     private String address;
+    private String specialization;
+
 
 }

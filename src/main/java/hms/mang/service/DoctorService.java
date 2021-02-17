@@ -13,4 +13,6 @@ public interface DoctorService {
     Optional<Doctor> getByName(String name);
 
     Optional<Doctor> getById(Long id);
+
+    void deleteById(Long id);
 }
